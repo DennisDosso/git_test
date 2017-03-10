@@ -1,0 +1,63 @@
+<div class="mainContainer">
+
+	<span class="" id="LOGO">
+
+		<a [routerLink]="'/'">
+
+			<img alt="logo" src="assets/images/LogoZeuS.png">
+		</a>
+	</span>
+	<div class="menuSection clickable"  id="quickPageSearchTop" (click)="showHideMenuByClass('quickPageSearch')" >
+		<i class="fa fa-wrench" aria-hidden="true"></i> <span> QUICK TOOL</span>
+		<i class="fa fa-angle-down floatRight" aria-hidden="true"></i>
+	</div>
+	<div class="quickPageSearch" id="quickPageSearch">
+		<div class="ui-g">
+			<div class="ui-g-12 noPadding">
+				<slim-quick-route></slim-quick-route>
+			</div>
+			<div class="ui-g-12">
+				<span>
+					<i class="fa fa-print" aria-hidden="true">
+					</i> Spool di stampa</span>
+				</div>
+				<div class="ui-g-12">
+					<span><i class="fa fa-terminal" aria-hidden="true"></i> Batch</span>
+				</div>
+				<div class="ui-g-12">
+					<slim-favorites-menu></slim-favorites-menu>
+				</div>
+
+			</div>
+
+		</div>
+		<div *ngFor="let menu of menuConfiguration.menus">
+			<div *ngIf="menu.enabled">
+				<div class="menuSection clickable" id="leftMenuTop" (click)="showHideMenu($event)" >
+					<i class="fa {{menu.icon}}" aria-hidden="true"></i> <span> {{menu.label | translate}}</span>
+					<i class="fa floatRight fa-angle-down" aria-hidden="true"></i>
+				</div>
+				<div class="leftMenu" >
+					<div *ngFor="let module of menu.modules">
+						<div *ngIf="module.enabled">
+							<span class="MenuSideMainLink bordersOfMenuSide "  (click)="toggleMenuModule($event)"> 
+								<span class="MainLinkText"><i class="fa {{module.icon}}"></i> {{module.label | translate}}</span>
+							</span>
+							<div class="SubMenuLinkContainer submenushow" >
+								<p-tree [value]="getEnabledMenuItem(module)" >
+								<template let-menuItem  pTemplate type="default">
+									<a [routerLink]='menuItem.route' (contextmenu)="showContextMenu($event,cm, menuItem)">{{menuItem.label | translate }}</a>
+								</template>
+							</p-tree>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+</div>
+<p-contextMenu [model]="cmItems" #cm></p-contextMenu>
+
+
